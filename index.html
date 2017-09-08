@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Incoming NEO!!!</title>
+    <script src='apiKey.js'></script>
+    <script src='render.js'></script>    
+    <script src='index.js'></script>
+    <link rel='stylesheet' type='text/css' href='main.css'>
+  </head>
+  <body>
+    <h1>Incoming Near Earth Objects... Duck Earthlings!</h1>
+    <h2>(using the NASA NEO API)</h2>
+    <canvas id='main-canvas' width='1000' height='200'></canvas>
+    <p>Monitor one week starting on:</p>
+    <input type='date' id='date-input'>
+    <br>
+    <p>Select date to display</p>
+    <select id='day-select'>
+      <option disabled selected>Choose a date</option>
+    </select>
+  </body>
+</html>
