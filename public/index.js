@@ -62,7 +62,7 @@ var populateSelect = function( dates, neos ){
 
 var daySelected = function( filteredNeos ){
   console.log( filteredNeos );
-  render( filteredNeos );
+  renderNeos( filteredNeos );
 }
 
 window.addEventListener('load', app)
