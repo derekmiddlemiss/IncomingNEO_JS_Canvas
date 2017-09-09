@@ -3,10 +3,11 @@ var renderNeos = function( neos ){
   var context = canvas.getContext( '2d' );
 
   var maxDistanceKM = getMaxDistanceKM( neos );
+  var minDistanceKM = getMinDistanceKM( neos, maxDistanceKM );
+
   var maxDistanceText = document.querySelector( '#max-distance' );
   maxDistanceText.innerText = "Maximum NEO distance from Earth = " + ( maxDistanceKM / 1E6 ) + " million km."
 
-  var minDistanceKM = getMinDistanceKM( neos, maxDistanceKM );
   var minDistanceText = document.querySelector( '#min-distance' );
   minDistanceText.innerText = "Minimum NEO distance from Earth = " + ( minDistanceKM / 1E6 ) + " million km."
   
@@ -24,9 +25,9 @@ var renderNeos = function( neos ){
 
   // add Sol
   var sol = document.createElement( 'img' );
-  sol.src = 'https://pbs.twimg.com/profile_images/641353910561566720/VSxsyxs7.jpg';
+  sol.src = 'http://ak6.picdn.net/shutterstock/videos/5135864/thumb/1.jpg';
   sol.addEventListener( 'load', function(){
-    context.drawImage( sol, canvas.width - 60, (canvas.height/2) - 60, 120, 120)
+    context.drawImage( sol, canvas.width - 100, (canvas.height/2) - 100, 200, 200)
   });
 
   // draw central line
@@ -45,7 +46,7 @@ var renderNeos = function( neos ){
   var staggerText = 1;
   context.font = "20px Arial";
   for ( var neo of neos ){
-    var thisDistanceKM = neo.close_approach_data[0].miss_distance.kilometers;
+    var thisDistanceKM = ( neo.close_approach_data[0].miss_distance.kilometers ) * 1.0;
     var thisDistancePX = canvas.width * ( thisDistanceKM / solDistanceKM );
     
     if ( neo.is_potentially_hazardous_asteroid ){
@@ -77,7 +78,7 @@ var renderNeos = function( neos ){
 var getMaxDistanceKM = function( neos ){
   var maxDistanceKM = 0.0;
   neos.forEach( function( neo ) {
-    var thisDistanceKM = neo.close_approach_data[0].miss_distance.kilometers;
+    var thisDistanceKM = ( neo.close_approach_data[0].miss_distance.kilometers ) * 1.0;
     if ( thisDistanceKM > maxDistanceKM ) maxDistanceKM = thisDistanceKM;
   });
   return maxDistanceKM;
@@ -86,7 +87,7 @@ var getMaxDistanceKM = function( neos ){
 var getMinDistanceKM = function( neos, maxDistanceKM ){
   var minDistanceKM = maxDistanceKM;
   neos.forEach( function( neo ) {
-    var thisDistanceKM = neo.close_approach_data[0].miss_distance.kilometers;
+    var thisDistanceKM = ( neo.close_approach_data[0].miss_distance.kilometers ) * 1.0;
     if ( thisDistanceKM < minDistanceKM ) minDistanceKM = thisDistanceKM;
   });
   return minDistanceKM;

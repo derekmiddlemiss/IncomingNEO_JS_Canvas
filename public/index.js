@@ -5,7 +5,6 @@ var app = function () {
   
   dateInput.addEventListener( 'input', function(){
     var date = this.value;
-    console.log( date );
     if ( date === "" ) return
     var requestUrl = baseUrl + date + "&" + "&api_key=" + apiKey();
     makeRequest( requestUrl, requestComplete );
@@ -30,7 +29,6 @@ var requestComplete = function() {
   neos = neos.near_earth_objects;
   var dates = Object.keys( neos );
   dates.sort();
-  console.log( dates );
   populateSelect( dates, neos );
 }
 
@@ -61,8 +59,27 @@ var populateSelect = function( dates, neos ){
 }
 
 var daySelected = function( filteredNeos ){
-  console.log( filteredNeos );
   renderNeos( filteredNeos );
+  populateList( filteredNeos );
+}
+
+var populateList = function( filteredNeos ){
+  var dailyList = document.querySelector( '#daily-neo-list')
+  while( dailyList.firstChild ) { 
+    dailyList.removeChild( dailyList.firstChild )
+  }
+  var counter = 0;
+  for ( var neo of filteredNeos ){
+    var item = document.createElement( 'li' );
+    var name = neo.name;
+    var diameter = neo.estimated_diameter.kilometers.estimated_diameter_max;
+    var distance = neo.close_approach_data[0].miss_distance.kilometers;
+    var speed = neo.close_approach_data[0].relative_velocity.kilometers_per_hour;
+    item.innerText = counter + " Name: " + name + ", Diameter(km): " + diameter + ", Distance (km): "; 
+    item.innerText += distance + ", Speed(km/h): " + speed;   
+    dailyList.appendChild( item );
+    counter++;
+  }
 }
 
 window.addEventListener('load', app)
