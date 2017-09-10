@@ -3,6 +3,7 @@
   <head>
     <title>Incoming NEO!!!</title>
     <script src='apiKey.js'></script>
+    <script src='renderBackground.js'></script>    
     <script src='renderNeos.js'></script>    
     <script src='index.js'></script>
     <link rel='stylesheet' type='text/css' href='main.css'>
@@ -14,13 +15,21 @@
       <p>Monitor one week starting on:</p>
       <input type='date' id='date-input'>
       <br>
-      <p>Select date to display</p>
+      <p>Select date to display:</p>
       <select id='day-select'>
         <option disabled selected>Choose a date</option>
       </select>
+      <hr>
       <p id='min-distance'></p>
       <p id='max-distance'></p>    
-      <p>Mean Sol distance = 149 million km</p>
-      <ul id='daily-neo-list'></ul>
+      <p id='earth-sol-distance'></p>
+      <hr>
+      <table id='daily-neo-list' align='center'>
+        <th>Number</th>
+        <th>Name</th>
+        <th>Diameter(km)</th>
+        <th>Approach Distance(km)</th>
+        <th>Speed(km/h)</th>  
+      </table>
   </body>
 </html>

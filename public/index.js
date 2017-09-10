@@ -3,14 +3,14 @@ var app = function () {
   var baseUrl = 'https://api.nasa.gov/neo/rest/v1/feed?start_date=';
   var dateInput = document.querySelector( '#date-input' );
   
+  renderBackground();
+
   dateInput.addEventListener( 'input', function(){
     var date = this.value;
     if ( date === "" ) return
     var requestUrl = baseUrl + date + "&" + "&api_key=" + apiKey();
     makeRequest( requestUrl, requestComplete );
   });
-
-  
 
 }
 
@@ -59,25 +59,45 @@ var populateSelect = function( dates, neos ){
 }
 
 var daySelected = function( filteredNeos ){
+  renderBackground();
   renderNeos( filteredNeos );
   populateList( filteredNeos );
 }
 
 var populateList = function( filteredNeos ){
   var dailyList = document.querySelector( '#daily-neo-list')
-  while( dailyList.firstChild ) { 
-    dailyList.removeChild( dailyList.firstChild )
+
+  while( dailyList.lastElementChild && dailyList.lastElementChild != dailyList.firstElementChild ) {
+    dailyList.removeChild( dailyList.lastElementChild )
   }
+
   var counter = 0;
   for ( var neo of filteredNeos ){
-    var item = document.createElement( 'li' );
-    var name = neo.name;
-    var diameter = neo.estimated_diameter.kilometers.estimated_diameter_max;
-    var distance = neo.close_approach_data[0].miss_distance.kilometers;
-    var speed = neo.close_approach_data[0].relative_velocity.kilometers_per_hour;
-    item.innerText = counter + " Name: " + name + ", Diameter(km): " + diameter + ", Distance (km): "; 
-    item.innerText += distance + ", Speed(km/h): " + speed;   
-    dailyList.appendChild( item );
+
+    var row = document.createElement( 'tr' );
+    
+    var numberCell = document.createElement( 'td' );
+    numberCell.innerText = counter;
+    row.appendChild( numberCell );
+
+    var nameCell = document.createElement( 'td' );
+    nameCell.innerText = neo.name;
+    row.appendChild( nameCell );
+
+    var diameterCell = document.createElement( 'td' );
+    diameterCell.innerText = neo.estimated_diameter.kilometers.estimated_diameter_max;
+    row.appendChild( diameterCell );
+
+    var distanceCell = document.createElement( 'td' );
+    distanceCell.innerText = neo.close_approach_data[0].miss_distance.kilometers;
+    row.appendChild( distanceCell );
+    
+    var speedCell = document.createElement( 'td' );
+    speedCell.innerText = neo.close_approach_data[0].relative_velocity.kilometers_per_hour;
+    row.appendChild( speedCell );
+
+    dailyList.appendChild( row );
+
     counter++;
   }
 }
