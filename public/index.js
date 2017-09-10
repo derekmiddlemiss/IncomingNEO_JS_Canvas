@@ -3,7 +3,10 @@ var app = function () {
   var baseUrl = 'https://api.nasa.gov/neo/rest/v1/feed?start_date=';
   var dateInput = document.querySelector( '#date-input' );
   
-  renderBackground();
+  var afterRenderTasks = function(){
+    drawLine();
+  }
+  renderBackground( afterRenderTasks );
 
   dateInput.addEventListener( 'input', function(){
     var date = this.value;
@@ -14,12 +17,16 @@ var app = function () {
 
 }
 
+//----------------------------------------------------------------------------
+
 var makeRequest = function( url, callback ) {
   var request = new XMLHttpRequest();
   request.open( 'GET', url );
   request.addEventListener( 'load', callback );
   request.send();
 }
+
+//----------------------------------------------------------------------------
 
 var requestComplete = function() {
   if ( this.status !== 200 ) return;
@@ -31,6 +38,8 @@ var requestComplete = function() {
   dates.sort();
   populateSelect( dates, neos );
 }
+
+//----------------------------------------------------------------------------
 
 var populateSelect = function( dates, neos ){
   var daySelect = document.querySelector( '#day-select' );
@@ -58,11 +67,18 @@ var populateSelect = function( dates, neos ){
 
 }
 
+//----------------------------------------------------------------------------
+
 var daySelected = function( filteredNeos ){
-  renderBackground();
-  renderNeos( filteredNeos );
+  var afterRenderTasks = function(){
+    drawLine();
+    renderNeos( filteredNeos );
+  }
+  renderBackground( afterRenderTasks );
   populateList( filteredNeos );
 }
+
+//----------------------------------------------------------------------------
 
 var populateList = function( filteredNeos ){
   var dailyList = document.querySelector( '#daily-neo-list')
@@ -101,5 +117,7 @@ var populateList = function( filteredNeos ){
     counter++;
   }
 }
+
+//----------------------------------------------------------------------------
 
 window.addEventListener('load', app)

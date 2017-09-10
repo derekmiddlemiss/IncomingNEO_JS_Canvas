@@ -15,46 +15,44 @@ var renderNeos = function( neos ){
   var earthSolDistance = document.querySelector( '#earth-sol-distance' );
   earthSolDistance.innerText = "Mean Earth - Sol distance = 149.6 million km";
 
-  setTimeout( function(){
+  var solDistanceKM = 149.6E6;
 
-    // mean Sol distance
-    var solDistanceKM = 149.6E6;
+  // draw each NEO
+  var counter = 0;
+  var staggerText = 1;
+  context.font = "20px Arial";
 
-    // draw each NEO
-    var counter = 0;
-    var staggerText = 1;
-    context.font = "20px Arial";
-    for ( var neo of neos ){
-      var thisDistanceKM = ( neo.close_approach_data[0].miss_distance.kilometers ) * 1.0;
-      var thisDistancePX = canvas.width * ( thisDistanceKM / solDistanceKM );
-      
-      if ( neo.is_potentially_hazardous_asteroid ){
-        var colour = 'red'; 
-      } else {
-        var colour = 'blue';
-      }
-
-      context.beginPath();
-      context.strokeStyle = colour;
-      context.arc(thisDistancePX, canvas.height/2, 10, 0, 2 * Math.PI);
-      context.fillStyle = colour;
-      context.fill();
-      context.stroke();
-      
-      if ( staggerText > 0 ){
-        context.fillText( counter, thisDistancePX - 5, ( canvas.height / 2 ) + 30 );
-      } else {
-        context.fillText( counter, thisDistancePX - 5, ( canvas.height / 2 ) - 20 );
-      }
-
-      counter++;
-      staggerText *= -1
-      
+  for ( var neo of neos ){
+    var thisDistanceKM = ( neo.close_approach_data[0].miss_distance.kilometers ) * 1.0;
+    var thisDistancePX = canvas.width * ( thisDistanceKM / solDistanceKM );
+    
+    if ( neo.is_potentially_hazardous_asteroid ){
+      var colour = 'red'; 
+    } else {
+      var colour = 'white';
     }
 
-  }, 100);
+    context.beginPath();
+    context.strokeStyle = 'black';
+    context.arc(thisDistancePX, canvas.height/2, 10, 0, 2 * Math.PI);
+    context.fillStyle = colour;
+    context.fill();
+    context.stroke();
+    
+    if ( staggerText > 0 ){
+      context.fillText( counter, thisDistancePX - 5, ( canvas.height / 2 ) + 30 );
+    } else {
+      context.fillText( counter, thisDistancePX - 5, ( canvas.height / 2 ) - 20 );
+    }
+
+    counter++;
+    staggerText *= -1
+    
+  }
 
 }
+
+//----------------------------------------------------------------------------
 
 var getMaxDistanceKM = function( neos ){
   var maxDistanceKM = 0.0;
@@ -64,6 +62,8 @@ var getMaxDistanceKM = function( neos ){
   });
   return maxDistanceKM;
 }
+
+//----------------------------------------------------------------------------
 
 var getMinDistanceKM = function( neos, maxDistanceKM ){
   var minDistanceKM = maxDistanceKM;
